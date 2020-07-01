@@ -7,7 +7,7 @@ const exec = require('child_process').execSync;
   const workspaces = JSON.parse(exec(`aws workspaces describe-workspaces --region ${region}`)
     .toString()).Workspaces;
 
-  const exclusions = ['AVAILABLE', 'STARTING', 'STOPPED'];
+  const exclusions = ['AVAILABLE', 'REBOOTING', 'STARTING', 'STOPPED', 'STOPPING'];
 
   const unhealthyWorkspaces = workspaces
     .filter(value => exclusions.indexOf(value.State) < 0)
