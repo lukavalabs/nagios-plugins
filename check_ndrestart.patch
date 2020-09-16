@@ -1,6 +1,18 @@
---- check_ndrestart  2020-09-09 16:43:45.696453425 +0000
-+++ check_ndrestart-AWS  2020-09-09 16:43:23.056188418 +0000
-@@ -133,7 +133,7 @@
+--- check_ndrestart    2020-09-16 17:18:13.874362859 +0000
++++ check_ndrestart-AWS  2020-09-16 17:19:06.254972929 +0000
+@@ -60,11 +60,6 @@
+         exit $STATE_UNKNOWN
+ fi
+
+-if [ ! $(rpm -q redhat-lsb-core) ]; then
+-        echo "UNKNOWN: the required package redhat-lsb-core is not installed on this system".
+-        exit $STATE_UNKNOWN
+-fi
+-
+ if [ ! -x $LSBRELEASE ]; then
+         echo "UNKNOWN: lsb_release not found or is not executable by the nagios/icinga user."
+         exit $STATE_UNKNOWN
+@@ -133,7 +128,7 @@
 
 
  case $LSBR_DISTRID in
