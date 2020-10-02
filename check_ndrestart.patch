@@ -12,12 +12,20 @@
  if [ ! -x $LSBRELEASE ]; then
          echo "UNKNOWN: lsb_release not found or is not executable by the nagios/icinga user."
          exit $STATE_UNKNOWN
-@@ -133,7 +128,7 @@
+@@ -133,6 +128,16 @@
 
 
  case $LSBR_DISTRID in
--    RedHatEnterpriseServer | CentOS)
-+    RedHatEnterpriseServer | CentOS | Amazon)
++    Amazon)
++        NEEDREBOOT=$(needs-restarting -r 2>&1)
++        RC_NEEDREBOOT=$?
++
++        if [ -n "${EXCLUDE}" ]; then
++            NEEDSRVRESTART=$(sudo needs-restarting -s 2>&1 | egrep -v "${EXCLUDE}")
++                    else
++            NEEDSRVRESTART=$(sudo needs-restarting -s 2>&1)
++        fi
++        ;;
+     RedHatEnterpriseServer | CentOS)
          if [ $(bc <<< "$LSBR_DISTRRN >= 7.3") -ne 0 ]; then
              NEEDREBOOT=$(needs-restarting -r 2>&1)
-             RC_NEEDREBOOT=$?
