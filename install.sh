@@ -11,6 +11,11 @@ if test -z "$(type -p xz)"; then
   exit 1
 fi
 
+if test -z "$(type -p patch)"; then
+  echo "Please install the 'patch' command." >&2
+  exit 1
+fi
+
 # We wrap the entire script in a big function which we only call at the very end, in order to
 # protect against the possibility of the connection dying mid-script. This protects us against
 # the problem described in this blog post:
