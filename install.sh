@@ -227,11 +227,23 @@ Please download a copy and name it 'install.sh' and run that as root, perhaps us
     echo "Downloading: check_ndrestart.patch"
     retryable_curl "https://raw.githubusercontent.com/lukavalabs/nagios-plugins/master/check_ndrestart.patch" "$WORK_DIR/check_ndrestart.patch"
     do_patch
+    do_sudoers
   }
 
   do_patch() {
     echo "Patching..."
     patch -d "$WORK_DIR" < $WORK_DIR/*.patch >&2
+  }
+
+  do_sudoers() {
+    local SUDOERS=/etc/sudoers.d/check_ndrestart
+    if [ ! -f "$SUDOERS" ]; then
+      cat >$SUDOERS <<EOL
+Defaults:icinga   !requiretty
+icinga ALL=(root) NOPASSWD: /usr/bin/needs-restarting
+EOL
+      chmod 440 $SUDOERS
+    fi
   }
 
   do_check_workspace() {
