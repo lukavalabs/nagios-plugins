@@ -163,7 +163,7 @@ _() {
     ENVVARS="$ENVVARS CURL_USER_AGENT=$CURL_USER_AGENT WORK_DIR=$WORK_DIR"
 
     if [ "$(basename $SCRIPT_NAME)" == bash ]; then
-      # Probably ran like "curl https://raw.githubusercontent.com/lukavalabs/nagios-plugins/master/install.sh | bash"
+      # Probably ran like "curl -s https://raw.githubusercontent.com/lukavalabs/nagios-plugins/master/install.sh | bash"
       echo "Re-running script as root..."
 
       exec sudo bash -euo pipefail -c "curl -fs -A $CURL_USER_AGENT https://raw.githubusercontent.com/lukavalabs/nagios-plugins/master/install.sh | $ENVVARS bash"
