@@ -241,6 +241,7 @@ Please download a copy and name it 'install.sh' and run that as root, perhaps us
 
   do_plugins_install() {
     echo "Installing Plugins..."
+    chmod +x $WORK_DIR/check_*
     cp "$WORK_DIR/check_ndrestart" "$DEFAULT_PLUGIN_DIR/check_ndrestart"
     if [ "yes" == "$INSTALL_WORKSPACE_PLUGINS" ]; then
       cp "$WORK_DIR/check_aws_workspaces_health" "$DEFAULT_PLUGIN_DIR/check_aws_workspaces_health"
