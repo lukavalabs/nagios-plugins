@@ -122,7 +122,7 @@ _() {
   USE_DEFAULTS="no"
   WORK_DIR="${WORK_DIR:-$(mktemp -d ./lukava-icinga-plugins-installer.XXXXXXXXXX)}"
   DEFAULT_PLUGIN_DIR="/usr/lib64/nagios/plugins"
-  INSTALL_WORKSPACE_PLUGINS="no"
+  INSTALL_AWS_WORKSPACE_PLUGINS="no"
   NODE_VERSION="v12.18.4"
   CURRENTLY_UID_ZERO="no"
   PREFER_ROOT="yes"
@@ -198,7 +198,7 @@ Please download a copy and name it 'install.sh' and run that as root, perhaps us
 
   plugin_prompts() {
     if prompt-yesno "Install AWS Workspace Plugins?" "yes"; then
-      INSTALL_WORKSPACE_PLUGINS="yes"
+      INSTALL_AWS_WORKSPACE_PLUGINS="yes"
       verify_node
     fi
   }
@@ -246,8 +246,8 @@ EOL
     fi
   }
 
-  do_check_workspace() {
-    if [ "yes" == "$INSTALL_WORKSPACE_PLUGINS" ]; then
+  do_check_aws_workspace() {
+    if [ "yes" == "$INSTALL_AWS_WORKSPACE_PLUGINS" ]; then
       echo "Downloading: check_aws_workspaces_connected.js"
       retryable_curl "https://raw.githubusercontent.com/lukavalabs/nagios-plugins/v0.1/check_aws_workspaces_connected.js" "$WORK_DIR/check_aws_workspaces_connected"
 
@@ -260,7 +260,7 @@ EOL
     echo "Installing Plugins..."
     chmod +x $WORK_DIR/check_*
     cp "$WORK_DIR/check_ndrestart" "$DEFAULT_PLUGIN_DIR/check_ndrestart"
-    if [ "yes" == "$INSTALL_WORKSPACE_PLUGINS" ]; then
+    if [ "yes" == "$INSTALL_AWS_WORKSPACE_PLUGINS" ]; then
       cp "$WORK_DIR/check_aws_workspaces_health" "$DEFAULT_PLUGIN_DIR/check_aws_workspaces_health"
       cp "$WORK_DIR/check_aws_workspaces_connected" "$DEFAULT_PLUGIN_DIR/check_aws_workspaces_connected"
     fi
@@ -278,7 +278,7 @@ EOL
   fi
   plugin_prompts
   do_check_ndrestart
-  do_check_workspace
+  do_check_aws_workspace
   do_plugins_install
   cleanup
   echo "Installation completed."
