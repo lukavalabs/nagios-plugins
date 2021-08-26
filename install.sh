@@ -249,7 +249,7 @@ EOL
   do_check_aws_workspace() {
     if [ "yes" == "$INSTALL_AWS_WORKSPACE_PLUGINS" ]; then
       echo "Downloading: check_aws_workspaces_connected.js"
-      retryable_curl "https://raw.githubusercontent.com/lukavalabs/nagios-plugins/v0.1/check_aws_workspaces_connected.js" "$WORK_DIR/check_aws_workspaces_connected"
+      retryable_curl "https://raw.githubusercontent.com/lukavalabs/nagios-plugins/master/check_aws_workspaces_connected.js" "$WORK_DIR/check_aws_workspaces_connected"
 
       echo "Downloading: check_aws_workspaces_health.js"
       retryable_curl "https://raw.githubusercontent.com/lukavalabs/nagios-plugins/master/check_aws_workspaces_health.js" "$WORK_DIR/check_aws_workspaces_health"
