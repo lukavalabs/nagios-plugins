@@ -206,7 +206,7 @@ Please download a copy and name it 'install.sh' and run that as root, perhaps us
   verify_node() {
     if test -z "$(type -p node)"; then
       local NODE_DIR="/usr/local/lib/nodejs"
-      echo "AWS Workspace Plugins require NodeJS."
+      echo "AWS Plugins require NodeJS."
       if prompt-yesno "Install NodeJS $NODE_VERSION now?" "yes"; then
         echo "Downloading: NodeJS $NODE_VERSION"
         retryable_curl "https://nodejs.org/download/release/$NODE_VERSION/node-$NODE_VERSION-linux-x64.tar.xz" "$WORK_DIR/node-$NODE_VERSION-linux-x64.tar.xz"
