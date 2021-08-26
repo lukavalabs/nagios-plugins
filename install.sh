@@ -123,6 +123,7 @@ _() {
   WORK_DIR="${WORK_DIR:-$(mktemp -d ./lukava-icinga-plugins-installer.XXXXXXXXXX)}"
   DEFAULT_PLUGIN_DIR="/usr/lib64/nagios/plugins"
   INSTALL_AWS_WORKSPACE_PLUGINS="no"
+  INSTALL_AWS_CLIENT_VPN_PLUGINS="no"
   NODE_VERSION="v12.18.4"
   CURRENTLY_UID_ZERO="no"
   PREFER_ROOT="yes"
@@ -201,6 +202,10 @@ Please download a copy and name it 'install.sh' and run that as root, perhaps us
       INSTALL_AWS_WORKSPACE_PLUGINS="yes"
       verify_node
     fi
+    if prompt-yesno "Install AWS Client VPN Plugins?" "yes"; then
+      INSTALL_AWS_CLIENT_VPN_PLUGINS="yes"
+      verify_node
+    fi
   }
 
   verify_node() {
@@ -256,6 +261,13 @@ EOL
     fi
   }
 
+  do_check_aws_vpn() {
+    if [ "yes" == "$INSTALL_AWS_CLIENT_VPN_PLUGINS" ]; then
+      echo "Downloading: check_aws_client_vpn_connected.js"
+      retryable_curl "https://raw.githubusercontent.com/lukavalabs/nagios-plugins/master/check_aws_client_vpn_connected.js" "$WORK_DIR/check_aws_client_vpn_connected"
+    fi
+  }
+
   do_plugins_install() {
     echo "Installing Plugins..."
     chmod +x $WORK_DIR/check_*
@@ -263,6 +275,9 @@ EOL
     if [ "yes" == "$INSTALL_AWS_WORKSPACE_PLUGINS" ]; then
       cp "$WORK_DIR/check_aws_workspaces_health" "$DEFAULT_PLUGIN_DIR/check_aws_workspaces_health"
       cp "$WORK_DIR/check_aws_workspaces_connected" "$DEFAULT_PLUGIN_DIR/check_aws_workspaces_connected"
+    fi
+    if [ "yes" == "$INSTALL_AWS_CLIENT_VPN_PLUGINS" ]; then
+      cp "$WORK_DIR/check_aws_client_vpn_connected" "$DEFAULT_PLUGIN_DIR/check_aws_client_vpn_connected"
     fi
   }
 
@@ -279,6 +294,7 @@ EOL
   plugin_prompts
   do_check_ndrestart
   do_check_aws_workspace
+  do_check_aws_vpn
   do_plugins_install
   cleanup
   echo "Installation completed."
