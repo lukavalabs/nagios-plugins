@@ -268,10 +268,16 @@ EOL
     fi
   }
 
+  do_check_yum() {
+    echo "Downloading: check_yum.py"
+    retryable_curl "https://raw.githubusercontent.com/HariSekhon/Nagios-Plugins/master/check_yum.py" "$WORK_DIR/check_yum"
+  }
+
   do_plugins_install() {
     echo "Installing Plugins..."
     chmod +x $WORK_DIR/check_*
     cp "$WORK_DIR/check_ndrestart" "$DEFAULT_PLUGIN_DIR/check_ndrestart"
+    cp "$WORK_DIR/check_yum" "$DEFAULT_PLUGIN_DIR/check_yum"
     if [ "yes" == "$INSTALL_AWS_WORKSPACE_PLUGINS" ]; then
       cp "$WORK_DIR/check_aws_workspaces_health" "$DEFAULT_PLUGIN_DIR/check_aws_workspaces_health"
       cp "$WORK_DIR/check_aws_workspaces_connected" "$DEFAULT_PLUGIN_DIR/check_aws_workspaces_connected"
@@ -292,6 +298,7 @@ EOL
     rerun_script_as_root
   fi
   plugin_prompts
+  do_check_yum
   do_check_ndrestart
   do_check_aws_workspace
   do_check_aws_vpn
